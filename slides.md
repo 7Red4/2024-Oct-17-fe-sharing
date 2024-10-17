@@ -631,6 +631,53 @@ layout: center
 ```
 
 ---
+layout: two-cols
+---
+
+```vue {all|14}
+<template>
+  <FormItem
+    :name="['extension', currentSlideIdx, 'buttons', currentEditBtn!.idx, 'url']"
+    :rules="[
+      {
+        required: true,
+        message: t('THIS_FIELD_IS_REQUIRED'),
+        trigger: ['change', 'blur'],
+      },
+      {
+        required: false,
+        message: t('BOT_BUILDER.KEY152'),
+        trigger: ['change', 'blur'],
+        validator: urlValidator,
+      }]"
+    class="w-full"
+    >
+    <TextField
+      v-model="currentEditBtn!.url"
+      :placeholder="t('BOT_BUILDER.KEY271')"
+    />
+  </FormItem>
+</template>
+```
+
+::right::
+
+```vue {all|3-6}
+<script setup lang="ts">
+const urlValidator = (rule: any, value: string) => {
+  if (!value) {
+    return Promise.resolve();
+  }
+
+  if (!isURLRegex.test(value)) {
+    return Promise.reject(t('BOT_BUILDER.KEY152'));
+  }
+  return Promise.resolve();
+};
+</script>
+```
+
+---
 
 ## Expect to be
 
