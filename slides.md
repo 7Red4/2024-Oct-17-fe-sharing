@@ -26,7 +26,7 @@ overviewSnapshots: true
 - Collapsible
 
 - Validatable
-- Vue3.5
+- ~~Vue3.5~~
 
 ---
 
@@ -683,101 +683,86 @@ const urlValidator = (rule: any, value: string) => {
 
 ```vue
 <template>
-  <ValidatableController ref="ref_validatableController">
+  <ValidatableRoot ref="ref_validatableRoot">
 
     <Validatable
       v-model="value"
       :isValidate="isValidate"
       :rules="[(v) => !!v || 'This is required']"
     >
-      input stuff or any content
+      input type stuff or any content
     </Validatable>
 
-  </ValidatableController>
+  </ValidatableRoot>
 </template>
 
 <script setup lang="ts">
-const ref_validatableController = ref();
+const ref_validatableRoot = ref();
 
 const doValidate = () => {
-  const { isValid, errors, fields } = ref_validatableController.value?.validate();
+  const { isValid, errors, fields } = ref_validatableRoot.value?.validate();
 
   // do something
 }
 </script>
 ```
-
----
-layout: center
 ---
 
-# [Vue 3.5](https://blog.vuejs.org/posts/vue-3-5)
+## Example (input type)
 
+```vue
+<template>
+
+  <Validatable
+    v-model="value"
+    :isValidate="isValidate"
+    :rules="[(v) => !!v || 'This is required']"
+  >
+    <input v-model="value" />
+  </Validatable>
+
+</template>
+```
+
+![](/inputErrorHint.png)
+---
+layout: two-cols
 ---
 
-## Reactive Props Destructure
+## Example (any content)
 
-Before
+```vue 
+<template>
 
-```ts
-const props = withDefaults(
-  defineProps<{
-    count?: number
-    msg?: string
-  }>(),
-  {
-    count: 0,
-    msg: 'hello'
+  <Validatable
+    v-model="value"
+    :isValidate="isValidate"
+    :rules="[validator]"
+    hide-hint
+  >
+    <button :class="{ 'border-danger': !isValidate }">
+      <TriangleAlertIcon v-if="!isValidate" />
+
+      ButtonText
+    </button>
+  </Validatable>
+
+</template>
+
+<script setup lang="ts">
+const validator = (v) => {
+  if (someCondition) {
+    return true;
   }
-)
-```
-
-After
-
-```ts
-const { count = 0, msg = 'hello' } = defineProps<{
-  count?: number
-  message?: string
-}>()
-```
-
----
-
-# useId\(\)
-
-```vue
-<script setup>
-import { useId } from 'vue'
-
-const id = useId()
+  return 'Something is wrong';
+}
 </script>
-
-<template>
-  <form>
-    <label :for="id">Name:</label>
-    <input :id="id" type="text" />
-  </form>
-</template>
 ```
 
----
-
-# useTemplateRef\(\)
-
-```vue
-<script setup>
-import { useTemplateRef } from 'vue'
-
-const inputRef = useTemplateRef('input')
-</script>
-
-<template>
-  <input ref="input">
-</template>
-```
-
-![](https://blog.vuejs.org/assets/template-ref.CUSlB3JH.png)
-
+::right::
+<div class="flex justify-center items-center h-full p-10">
+  <img src="/buttonErrorHint.png" />
+</div>
 ---
 layout: end
 ---
