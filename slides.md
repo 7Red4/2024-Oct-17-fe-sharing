@@ -609,6 +609,12 @@ const collapseAllCards = () => {
 layout: center
 ---
 
+# Drawer Resizer
+
+---
+layout: center
+---
+
 # Validatable (didn't be done 🥲)
 
 ---
